@@ -1,0 +1,174 @@
+/*
+ * variables
+*/
+* {
+    -background-color-primary-dark: #0F0F0F;
+    -background-color-primary: #4C4C4C;
+    -background-color-primary-light: #727272;
+    -background-color-accent: #191C22;
+    -text-color-primary: #C8C8C8;
+    -text-color-accent: #F2B03F;
+}
+
+/*
+ * root
+*/
+.root {
+    -fx-font-size: 16pt;
+    -fx-font-family: "Roboto Light";
+    -fx-background-color: -background-color-primary-dark;
+}
+
+/*
+ * buttons
+*/
+.button {
+    -fx-font-size: 10pt;
+    -fx-background-color: -background-color-primary;
+    -fx-text-fill: -text-color-primary;
+}
+
+.icon-button:selected {
+    -fx-background-color: -background-color-accent;
+    -fx-text-fill: -text-color-accent;
+}
+
+.button:hover {
+    -fx-background-color: -background-color-primary-light;
+}
+
+/*
+ * icon buttons
+*/
+.icon-button {
+    -fx-content-display: graphic-only;
+    -icon-paint: -text-color-primary;
+}
+
+.icon-button:selected {
+    -fx-background-color: -background-color-accent;
+    -fx-text-fill: -text-color-accent;
+    -icon-paint: -text-color-accent;
+}
+
+.icon-button .icon-1 {
+    -fx-background-color: -icon-paint;
+    -fx-min-height: 15;
+    -fx-min-width: 22;
+    -fx-max-height: 15;
+    -fx-max-width: 22;
+    -fx-shape: "M11 0C6 0 1.73 3.11 0 7.5C1.73 11.89 6 15 11 15C16 15 20.27 11.89 22 7.5C20.27 3.11 16 0 11 0ZM11 12.5C8.24 12.5 6 10.26 6 7.5C6 4.74 8.24 2.5 11 2.5C13.76 2.5 16 4.74 16 7.5C16 10.26 13.76 12.5 11 12.5ZM11 4.5C9.34 4.5 8 5.84 8 7.5C8 9.16 9.34 10.5 11 10.5C12.66 10.5 14 9.16 14 7.5C14 5.84 12.66 4.5 11 4.5Z";
+}
+
+.icon-button .icon-2 {
+    -fx-background-color: -icon-paint;
+    -fx-min-height: 16;
+    -fx-min-width: 27;
+    -fx-max-height: 16;
+    -fx-max-width: 27;
+    -fx-shape: "M14 0V16H15V0H14ZM10 2H2C1.44772 2 1 2.44772 1 3V13C1 13.5523 1.44772 14 2 14H10C10.5523 14 11 13.5523 11 13V3C11 2.44772 10.5523 2 10 2ZM2 1C0.895431 1 0 1.89543 0 3V13C0 14.1046 0.895431 15 2 15H10C11.1046 15 12 14.1046 12 13V3C12 1.89543 11.1046 1 10 1H2ZM17 3C17 1.89543 17.8954 1 19 1H27C28.1046 1 29 1.89543 29 3V13C29 14.1046 28.1046 15 27 15H19C17.8954 15 17 14.1046 17 13V3Z";
+}
+
+/*
+ * combo boxes
+*/
+.combo-box .list-cell {
+    -fx-text-fill: -text-color-primary;
+}
+
+.combo-box .text-field {
+    -fx-text-fill: -text-color-primary;
+    -fx-prompt-text-fill: -text-color-primary;
+    -fx-background-color: -background-color-primary;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: -background-color-primary;
+}
+
+.combo-box-popup .list-view .list-cell {
+    -fx-text-fill: -text-color-primary;
+    -fx-background-color: -background-color-primary;
+}
+
+.combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: -background-color-primary-light;
+}
+
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
+}
+
+/*
+ * labels
+*/
+.label {
+    -fx-font-size: 10pt;
+    -fx-text-fill: #C8C8C8;
+}
+
+/*
+ * file drop area info
+*/
+.drop-area-info {
+    -fx-background-color: #333333;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+}
+
+/*
+ * scrollbar
+*/
+.corner {
+    -fx-background-color: -background-color-primary-dark;
+}
+
+.scroll-bar * {
+    -fx-border-color: -background-color-primary-dark;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow,
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-padding: 0 0 0 0;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: -background-color-primary;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: -background-color-primary-light;
+}
+
+.scroll-bar:vertical {
+    -fx-pref-width: 13;
+    -fx-padding: 1;
+    -fx-background-color: -background-color-primary-dark;
+}
+
+.scroll-bar:horizontal {
+    -fx-pref-height: 13;
+    -fx-padding: 1;
+    -fx-background-color: -background-color-primary-dark;
+}
+
+/*
+ * slider
+ */
+.slider .track {
+    -fx-pref-height: 3;
+    -fx-control-inner-background: -text-color-primary;
+    -fx-border-color: transparent;
+}
+
+.slider .thumb {
+    -fx-background-color: -text-color-primary;
+    -fx-pref-height: 16;
+    -fx-pref-width: 16;
+}
+
+.slider .thumb:hover, .slider .thumb:pressed {
+    -fx-background-color: -text-color-accent;
+}
