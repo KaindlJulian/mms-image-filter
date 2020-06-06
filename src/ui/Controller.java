@@ -1,5 +1,6 @@
 package ui;
 
+import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -10,8 +11,7 @@ import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 
@@ -54,8 +54,6 @@ public class Controller {
 
   @FXML private BorderPane mainPane;
 
-  @FXML private ScrollPane filterImagePane;
-
   @FXML private HBox filterBar;
 
   @FXML private Label selectedFilterName;
@@ -69,6 +67,7 @@ public class Controller {
     initDisplayModeToggle();
     initFilterBar();
     initParameterControl();
+    initAccelerators();
     imageView.imageProperty().bind(currentImage);
     imageView.scaleXProperty().bind(scaleFactor);
     imageView.scaleYProperty().bind(scaleFactor);
@@ -227,6 +226,16 @@ public class Controller {
               .getChildren()
               .setAll(filterParameterManager.buildParameterControls());
         });
+  }
+
+  private void initAccelerators() {
+    KeyCombination kcMinus = new KeyCodeCombination(KeyCode.MINUS, KeyCombination.CONTROL_DOWN);
+    KeyCombination kcPlus = new KeyCodeCombination(KeyCode.PLUS, KeyCombination.CONTROL_DOWN);
+
+    Platform.runLater(() -> {
+      rootVBox.getScene().getAccelerators().put(kcMinus, this::onZoomOutClick);
+      rootVBox.getScene().getAccelerators().put(kcPlus, this::onZoomInClick);
+    });
   }
 
   private void applyNewFilter() {
