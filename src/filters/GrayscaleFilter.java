@@ -1,7 +1,7 @@
 package filters;
 
-import common.Filter;
 import common.FilterParameter;
+import common.NoParamFilter;
 import filters.utils.Pixel;
 
 import java.awt.*;
@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Map;
 
-public class GrayscaleFilter implements Filter {
+public class GrayscaleFilter implements NoParamFilter {
   @Override
   public String getFilterName() {
     return "Grayscale";
