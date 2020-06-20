@@ -23,6 +23,7 @@ public class Main extends Application {
   }
 
   public static void main(String[] args) {
+    // check for command line argument
     if (args.length > 0) {
       String path = args[0];
       File inputImage = new File(path);

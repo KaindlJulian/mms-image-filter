@@ -1,7 +1,7 @@
 package common;
 
 public class FilterParameter {
-  private String name;
+  private final String name;
   private int value;
   private final int defaultValue;
   private final double minValue;

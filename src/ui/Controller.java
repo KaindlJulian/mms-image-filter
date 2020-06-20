@@ -20,46 +20,91 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Controller of the JavaFX MVC Pattern
+ *
+ * <p>Handles user input and dynamically changing UI Elements
+ */
 public class Controller {
 
+  /** Default zoom in/out amount in percent[%] */
   private final int ZOOM_AMOUNT = 20;
 
-  private final FileChooser importFileChooser = new FileChooser();
-
-  private final FilterBarManager filterBarManager = new FilterBarManager();
-
-  private final ObjectProperty<Image> currentImage = new SimpleObjectProperty<>();
-
-  private final FilterParameterManager filterParameterManager = new FilterParameterManager();
-
-  private final ToggleGroup displayMode = new ToggleGroup();
-
+  /**
+   * Observable Double
+   *
+   * <p>Contains the current image scaleFactor. Used to zoom in/out. 1 = 100%.
+   */
   private final DoubleProperty scaleFactor = new SimpleDoubleProperty(1);
 
-  private Image filteredImage;
+  /**
+   * Observable Object
+   *
+   * <p>Contains the currently displayed image. If no filter was applied this contains the
+   * originalImage and otherwise the filtered one.
+   */
+  private final ObjectProperty<Image> currentImage = new SimpleObjectProperty<>();
 
+  /**
+   * Observable Object
+   *
+   * <p>Contains the original image. Only updated when a new image is imported.
+   */
   private final ObjectProperty<Image> originalImage = new SimpleObjectProperty<>();
 
+  /** Helper variable to always contain the result of the most recent filter application */
+  private Image filteredImage;
+
+  /**
+   * UIManager, controls the bottom filter bar
+   *
+   * <p>Holds the currently selected and all applicable Filters. Notifies listeners when the
+   * selected Filter changed.
+   */
+  private final FilterBarManager filterBarManager = new FilterBarManager();
+
+  /**
+   * UIManager, controls the filter parameters
+   *
+   * <p>Holds the currently selected filter parameters. Notifies listeners when one of the filter
+   * parameters changed in value.
+   */
+  private final FilterParameterManager filterParameterManager = new FilterParameterManager();
+
+  /** The ImportFileChooser is instanced here, because it needs special setup */
+  private final FileChooser importFileChooser = new FileChooser();
+
+  /** Reference to the root VBox */
   @FXML private VBox rootVBox;
 
+  /** Reference to the ImageView */
   @FXML private ImageView imageView;
 
+  /** Reference to the zoom ComboBox */
   @FXML private ComboBox<String> zoomComboBox;
 
+  /** Reference to the file drop info panel (to hide/show it) */
   @FXML private StackPane dropAreaInformation;
 
+  /** Reference to the toggleOriginal ToggleButton */
   @FXML private ToggleButton toggleOriginal;
 
+  /** Reference to the toggleSplitScreen ToggleButton */
   @FXML private ToggleButton toggleSplitScreen;
 
+  /** Reference to the main BorderPane */
   @FXML private BorderPane mainPane;
 
+  /** Reference to the filterBar containing all the applicable filters */
   @FXML private HBox filterBar;
 
+  /** Reference to the selectedFilterName Label */
   @FXML private Label selectedFilterName;
 
+  /** Reference to the filterParametersContainer */
   @FXML private VBox filterParametersContainer;
 
+  /** Initializes the UI */
   @FXML
   private void initialize() {
     initZoomComboBox();
@@ -84,6 +129,7 @@ public class Controller {
     }
   }
 
+  /** Handles a click on the import button */
   @FXML
   private void onImportClick() {
     try {
@@ -94,6 +140,7 @@ public class Controller {
     }
   }
 
+  /** Handles a click on the export button */
   @FXML
   private void onExportClick() {
     if (currentImage.getValue() != null) {
@@ -101,7 +148,7 @@ public class Controller {
       FileChooser fc = new FileChooser();
       File outFile = fc.showSaveDialog(rootVBox.getScene().getWindow());
 
-      try{
+      try {
         ImageIO.write(bi, "png", outFile);
       } catch (IOException e) {
         e.printStackTrace();
@@ -109,18 +156,25 @@ public class Controller {
     }
   }
 
+  /** * Handles a click on the zoom in button */
   @FXML
   private void onZoomInClick() {
     int newZoom = Integer.parseInt(zoomComboBox.getValue().replace("%", "")) + ZOOM_AMOUNT;
     zoomComboBox.valueProperty().setValue(newZoom + "%");
   }
 
+  /** Handles a click on the zoom out button */
   @FXML
   private void onZoomOutClick() {
     int newZoom = Integer.parseInt(zoomComboBox.getValue().replace("%", "")) - ZOOM_AMOUNT;
     zoomComboBox.valueProperty().setValue(newZoom + "%");
   }
 
+  /**
+   * Handles dropped files
+   *
+   * @param event A DragEvent
+   */
   @FXML
   private void onFileDrop(DragEvent event) {
     Dragboard dragboard = event.getDragboard();
@@ -130,6 +184,7 @@ public class Controller {
     dragboard.clear();
   }
 
+  /** Initializes the zoom combo box listener */
   private void initZoomComboBox() {
     zoomComboBox
         .valueProperty()
@@ -143,6 +198,7 @@ public class Controller {
             });
   }
 
+  /** Initializes all file choosers */
   private void initFileChoosers() {
     File home = new File(System.getProperty("user.home"));
     FileChooser.ExtensionFilter imageFilter =
@@ -153,7 +209,9 @@ public class Controller {
     importFileChooser.getExtensionFilters().add(imageFilter);
   }
 
+  /** Initializes the toggle between display modes */
   private void initDisplayModeToggle() {
+    ToggleGroup displayMode = new ToggleGroup();
     toggleOriginal.setToggleGroup(displayMode);
     toggleSplitScreen.setToggleGroup(displayMode);
     toggleOriginal.setUserData(0);
@@ -187,6 +245,7 @@ public class Controller {
             });
   }
 
+  /** Initializes a split screen view */
   private void initSplitScreen() {
     GridPane grid = new GridPane();
 
@@ -209,6 +268,7 @@ public class Controller {
     mainPane.setCenter(grid);
   }
 
+  /** Initializes the filter bar listener */
   private void initFilterBar() {
     originalImage.addListener(
         (obs, oldI, newI) -> {
@@ -216,6 +276,7 @@ public class Controller {
         });
   }
 
+  /** Initializes the parameter control listener */
   private void initParameterControl() {
     filterBarManager.selectedFilter.addListener(
         (obs, oldF, newF) -> {
@@ -228,30 +289,38 @@ public class Controller {
         });
   }
 
+  /** Initializes the keyboard shortcuts to zoom in/out */
   private void initAccelerators() {
     KeyCombination kcMinus = new KeyCodeCombination(KeyCode.MINUS, KeyCombination.CONTROL_DOWN);
     KeyCombination kcPlus = new KeyCodeCombination(KeyCode.PLUS, KeyCombination.CONTROL_DOWN);
 
-    Platform.runLater(() -> {
-      rootVBox.getScene().getAccelerators().put(kcMinus, this::onZoomOutClick);
-      rootVBox.getScene().getAccelerators().put(kcPlus, this::onZoomInClick);
-    });
+    Platform.runLater(
+        () -> {
+          rootVBox.getScene().getAccelerators().put(kcMinus, this::onZoomOutClick);
+          rootVBox.getScene().getAccelerators().put(kcPlus, this::onZoomInClick);
+        });
   }
 
+  /** Applies the selected filter from the {@link #filterBarManager} */
   private void applyNewFilter() {
-    currentImage.setValue(
-        SwingFXUtils.toFXImage(
-            (BufferedImage)
-                filterBarManager
-                    .selectedFilter
-                    .getValue()
-                    .apply(
-                        SwingFXUtils.fromFXImage(originalImage.getValue(), null),
-                        filterParameterManager.getCurrentParameters()),
-            null));
+    java.awt.Image filterResult =
+        filterBarManager
+            .selectedFilter
+            .getValue()
+            .apply(
+                ImageConverter.toAwt(originalImage.getValue()),
+                filterParameterManager.getCurrentParameters());
+
+    currentImage.setValue(ImageConverter.toFX(filterResult));
     filteredImage = currentImage.getValue();
   }
 
+  /**
+   * Updates the {@link #currentImage} and {@link #originalImage}. Also resets the {@link
+   * #filterBarManager} and UI.
+   *
+   * @param file A file containing the image
+   */
   private void setNewImage(File file) {
     filterBarManager.reset();
     filterParametersContainer.getChildren().clear();
@@ -261,6 +330,13 @@ public class Controller {
     currentImage.setValue(image);
   }
 
+  /**
+   * Centers the image inside of a ScrollPane
+   *
+   * @param image The image to display
+   * @param isStatic Bind the imageView image property to the {@link #currentImage}
+   * @return The prepared ScrollPane
+   */
   private ScrollPane buildImageScrollView(Image image, boolean isStatic) {
     ImageView imgView = new ImageView(image);
     imgView.scaleXProperty().bind(scaleFactor);

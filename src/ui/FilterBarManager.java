@@ -5,7 +5,6 @@ import filters.GrayscaleFilter;
 import filters.ThresholdFilter;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -14,28 +13,38 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+/** Responsible for all the filters Holds the currently selectedFilter and all the available ones */
 public class FilterBarManager {
+  /**
+   * Observable Object
+   *
+   * <p>Contains the currently selected filter
+   */
+  public final ObjectProperty<Filter> selectedFilter = new SimpleObjectProperty<>();
+
+  /** A list of all the available filters */
   private final List<Filter> filters;
-  public final ObjectProperty<Filter> selectedFilter = new SimpleObjectProperty<Filter>();
 
   public FilterBarManager() {
+    // registering all filters
     this.filters = List.of(new ThresholdFilter(), new GrayscaleFilter());
   }
 
+  /**
+   * Builds UI elements each being a preview for a filter
+   * @param original The original unfiltered Image
+   * @return A list of filter previews as FX Nodes
+   */
   public List<Node> buildFilterBar(Image original) {
     List<Node> filterNodes = new ArrayList<>();
 
     for (Filter f : filters) {
       StackPane stackPane = new StackPane();
       Image img =
-          SwingFXUtils.toFXImage(
-              (BufferedImage)
-                  f.apply(SwingFXUtils.fromFXImage(original, null), f.getParametersMap()),
-              null);
+          ImageConverter.toFX(f.apply(ImageConverter.toAwt(original), f.getParametersMap()));
       ImageView imgView = new ImageView(img);
 
       imgView.setPreserveRatio(true);
@@ -49,15 +58,16 @@ public class FilterBarManager {
       stackPane.getChildren().addAll(imgView, label);
       stackPane.setUserData(f);
       stackPane.setOnMouseClicked(
-          event -> {
-            selectedFilter.setValue((Filter) ((StackPane) event.getSource()).getUserData());
-          });
+          event -> selectedFilter.setValue((Filter) ((StackPane) event.getSource()).getUserData()));
       filterNodes.add(stackPane);
     }
 
     return filterNodes;
   }
 
+  /**
+   * Reset the state
+   */
   public void reset() {
     selectedFilter.setValue(null);
   }

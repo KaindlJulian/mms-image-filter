@@ -4,8 +4,7 @@ import java.awt.image.ColorModel;
 
 public class Pixel {
   private int raw;
-  private ColorModel colorModel = ColorModel.getRGBdefault();
-
+  private static final ColorModel COLOR_MODEL = ColorModel.getRGBdefault();
 
   public Pixel(int raw) {
     this.raw = raw;
@@ -19,12 +18,12 @@ public class Pixel {
   }
 
   public int getR() {
-    return colorModel.getRed(raw);
+    return COLOR_MODEL.getRed(raw);
   }
   public int getG() {
-    return colorModel.getGreen(raw);
+    return COLOR_MODEL.getGreen(raw);
   }
   public int getB() {
-    return colorModel.getBlue(raw);
+    return COLOR_MODEL.getBlue(raw);
   }
 }

@@ -2,6 +2,9 @@ package ui;
 
 import java.io.File;
 
+/**
+ * Singleton to hold a file
+ */
 public enum InputImageArg {
     INSTANCE;
 

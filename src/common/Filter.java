@@ -14,6 +14,9 @@ public interface Filter {
 
   List<FilterParameter> getParameters();
 
+  /**
+   * @return A map with parameter names as key
+   */
   default Map<String, FilterParameter> getParametersMap() {
     return getParameters().stream()
         .collect(Collectors.toMap(FilterParameter::getName, Function.identity()));

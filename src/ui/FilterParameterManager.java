@@ -14,10 +14,17 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/** Responsible for the parameters of a selected filter. */
 public class FilterParameterManager {
 
+  /** A list of the currently displayed parameters */
   private List<FilterParameter> currentParameters;
 
+  /**
+   * Observable boolean
+   *
+   * <p>Indicates when a parameter changed
+   */
   public BooleanProperty changed = new SimpleBooleanProperty();
 
   public FilterParameterManager() {
@@ -28,6 +35,15 @@ public class FilterParameterManager {
     currentParameters = params;
   }
 
+  public Map<String, FilterParameter> getCurrentParameters() {
+    return currentParameters.stream()
+            .collect(Collectors.toMap(FilterParameter::getName, Function.identity()));
+  }
+
+  /**
+   * Build Controls for the parameters and bind them to the current parameters and change property
+   * @return A list of UI elements each being a control element for a filter parameter
+   */
   public List<Node> buildParameterControls() {
     ArrayList<Node> controls = new ArrayList<>();
 
@@ -50,10 +66,5 @@ public class FilterParameterManager {
     }
 
     return controls;
-  }
-
-  public Map<String, FilterParameter> getCurrentParameters() {
-    return currentParameters.stream()
-        .collect(Collectors.toMap(FilterParameter::getName, Function.identity()));
   }
 }
