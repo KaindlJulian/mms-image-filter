@@ -1,6 +1,5 @@
 package filters;
 
-import common.FilterParameter;
 import common.NoParamFilter;
 import common.parameters.Parameter;
 import filters.utils.Pixel;
