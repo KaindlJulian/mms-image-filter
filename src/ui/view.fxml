@@ -106,22 +106,48 @@
                 </AnchorPane>
             </top>
             <right>
-                <VBox fx:id="sideOptions" prefHeight="672.0" prefWidth="280.0" style="-fx-background-color: #1B1B1B;"
+                <VBox fx:id="sideOptions" prefWidth="280.0" style="-fx-background-color: #1B1B1B;"
                       BorderPane.alignment="CENTER">
                     <children>
-                        <Label fx:id="selectedFilterName" style="-fx-font-size: 16;" text="No Filter Selected">
-                            <VBox.margin>
-                                <Insets left="8.0" top="12.0"/>
-                            </VBox.margin>
-                            <padding>
-                                <Insets bottom="20.0"/>
-                            </padding>
-                        </Label>
-                        <VBox fx:id="filterParametersContainer" prefWidth="100.0">
-                            <VBox.margin>
-                                <Insets left="8.0" right="8.0" top="16.0"/>
-                            </VBox.margin>
-                        </VBox>
+                        <GridPane prefHeight="676.0" prefWidth="280.0" VBox.vgrow="ALWAYS">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="ALWAYS" minWidth="10.0"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" vgrow="ALWAYS"/>
+                                <RowConstraints minHeight="148.0" prefHeight="148.0" vgrow="NEVER"/>
+                            </rowConstraints>
+                            <children>
+                                <VBox prefHeight="200.0" prefWidth="100.0">
+                                    <children>
+                                        <Label fx:id="selectedFilterName" style="-fx-font-size: 16;"
+                                               text="No Filter Selected">
+                                            <VBox.margin>
+                                                <Insets left="8.0" top="12.0"/>
+                                            </VBox.margin>
+                                            <padding>
+                                                <Insets bottom="20.0"/>
+                                            </padding>
+                                        </Label>
+                                        <VBox fx:id="filterParametersContainer" prefWidth="100.0">
+                                            <VBox.margin>
+                                                <Insets left="8.0" right="8.0" top="16.0"/>
+                                            </VBox.margin>
+                                        </VBox>
+                                    </children>
+                                </VBox>
+                                <StackPane GridPane.rowIndex="1">
+                                    <children>
+                                        <Group>
+                                            <children>
+                                                <ImageView fx:id="colorHistogram" cache="true" fitHeight="122.0"
+                                                           fitWidth="256.0" preserveRatio="true" smooth="false"/>
+                                            </children>
+                                        </Group>
+                                    </children>
+                                </StackPane>
+                            </children>
+                        </GridPane>
                     </children>
                 </VBox>
             </right>

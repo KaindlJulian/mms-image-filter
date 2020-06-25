@@ -1,5 +1,6 @@
 package ui;
 
+import filters.internal.ColorHistogramFilter;
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
@@ -74,8 +75,6 @@ public class Controller {
    */
   private final FilterParameterManager filterParameterManager = new FilterParameterManager();
 
-
-
   /** The ImportFileChooser is instanced here, because it needs additional setup */
   private final FileChooser importFileChooser = new FileChooser();
 
@@ -112,6 +111,9 @@ public class Controller {
   /** Reference to the filterParametersContainer */
   @FXML private VBox filterParametersContainer;
 
+  /** Reference to the colorHistogram ImageView */
+  @FXML private ImageView colorHistogram;
+
   /** Initializes the UI */
   @FXML
   private void initialize() {
@@ -121,6 +123,7 @@ public class Controller {
     initFilterBar();
     initParameterControl();
     initAccelerators();
+    initColorHistogram();
     imageView.imageProperty().bind(currentImage);
     imageView.scaleXProperty().bind(scaleFactor);
     imageView.scaleYProperty().bind(scaleFactor);
@@ -156,7 +159,8 @@ public class Controller {
 
       String f = currentFile.getName();
       String[] nameAndExt = currentFile.getName().split("\\.");
-      exportFileChooser.setInitialFileName(String.format("%s-filtered.%s", nameAndExt[0], nameAndExt[1]));
+      exportFileChooser.setInitialFileName(
+          String.format("%s-filtered.%s", nameAndExt[0], nameAndExt[1]));
       File outFile = exportFileChooser.showSaveDialog(rootVBox.getScene().getWindow());
 
       try {
@@ -313,6 +317,16 @@ public class Controller {
         () -> {
           rootVBox.getScene().getAccelerators().put(kcMinus, this::onZoomOutClick);
           rootVBox.getScene().getAccelerators().put(kcPlus, this::onZoomInClick);
+        });
+  }
+
+  private void initColorHistogram() {
+    ColorHistogramFilter histogramFilter = new ColorHistogramFilter();
+
+    currentImage.addListener(
+        (obs, oldI, newI) -> {
+          colorHistogram.setImage(
+              ImageConverter.toFX(histogramFilter.apply(ImageConverter.toAwt(newI))));
         });
   }
 

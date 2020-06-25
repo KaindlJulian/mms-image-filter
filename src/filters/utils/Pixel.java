@@ -26,4 +26,8 @@ public class Pixel {
   public int getB() {
     return COLOR_MODEL.getBlue(raw);
   }
+
+  public int[] getRGBArray() {
+    return new int[]{getR(), getG(), getB() };
+  }
 }
