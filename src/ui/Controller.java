@@ -55,6 +55,9 @@ public class Controller {
   /** Helper variable to always contain the result of the most recent filter application */
   private Image filteredImage;
 
+  /** Helper variable to always contain the currently imported file */
+  private File currentFile;
+
   /**
    * UIManager, controls the bottom filter bar
    *
@@ -71,8 +74,13 @@ public class Controller {
    */
   private final FilterParameterManager filterParameterManager = new FilterParameterManager();
 
-  /** The ImportFileChooser is instanced here, because it needs special setup */
+
+
+  /** The ImportFileChooser is instanced here, because it needs additional setup */
   private final FileChooser importFileChooser = new FileChooser();
+
+  /** The ExportFileChooser is instanced here, because it needs additional setup */
+  private final FileChooser exportFileChooser = new FileChooser();
 
   /** Reference to the root VBox */
   @FXML private VBox rootVBox;
@@ -145,11 +153,14 @@ public class Controller {
   private void onExportClick() {
     if (currentImage.getValue() != null) {
       BufferedImage bi = SwingFXUtils.fromFXImage(currentImage.getValue(), null);
-      FileChooser fc = new FileChooser();
-      File outFile = fc.showSaveDialog(rootVBox.getScene().getWindow());
+
+      String f = currentFile.getName();
+      String[] nameAndExt = currentFile.getName().split("\\.");
+      exportFileChooser.setInitialFileName(String.format("%s-filtered.%s", nameAndExt[0], nameAndExt[1]));
+      File outFile = exportFileChooser.showSaveDialog(rootVBox.getScene().getWindow());
 
       try {
-        ImageIO.write(bi, "png", outFile);
+        ImageIO.write(bi, nameAndExt[1], outFile);
       } catch (IOException e) {
         e.printStackTrace();
       }
@@ -207,6 +218,10 @@ public class Controller {
     importFileChooser.setInitialDirectory(home);
     importFileChooser.setTitle("Select Image");
     importFileChooser.getExtensionFilters().add(imageFilter);
+
+    exportFileChooser.setInitialDirectory(home);
+    exportFileChooser.setTitle("Export Image");
+    exportFileChooser.getExtensionFilters().add(imageFilter);
   }
 
   /** Initializes the toggle between display modes */
@@ -322,6 +337,7 @@ public class Controller {
    * @param file A file containing the image
    */
   private void setNewImage(File file) {
+    currentFile = file;
     filterBarManager.reset();
     filterParametersContainer.getChildren().clear();
     Image image = new Image(file.toURI().toString());
