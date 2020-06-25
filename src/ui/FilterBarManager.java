@@ -1,8 +1,7 @@
 package ui;
 
 import common.Filter;
-import filters.GrayscaleFilter;
-import filters.ThresholdFilter;
+import filters.*;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Insets;
@@ -30,11 +29,30 @@ public class FilterBarManager {
 
   public FilterBarManager() {
     // registering all filters
-    this.filters = List.of(new ThresholdFilter(), new GrayscaleFilter());
+    this.filters =
+        List.of(
+            new ThresholdFilter(),
+            new GrayscaleFilter(),
+            new Anaglyph(),
+            new BlueFilter(),
+            new BlueRedSwapFilter(),
+            new Brightness(),
+            new EnhanceColourFilter(),
+            new FilterColors(),
+            new GreenFilter(),
+            new Grid(),
+            new MirrorHorizontal(),
+            new MirrorVertical(),
+            new Negative(),
+            new Pride(),
+            new RedFilter(),
+            new ResizeFilter(),
+            new RGBFilter());
   }
 
   /**
    * Builds UI elements each being a preview for a filter
+   *
    * @param original The original unfiltered Image
    * @return A list of filter previews as FX Nodes
    */
@@ -65,9 +83,7 @@ public class FilterBarManager {
     return filterNodes;
   }
 
-  /**
-   * Reset the state
-   */
+  /** Reset the state */
   public void reset() {
     selectedFilter.setValue(null);
   }
