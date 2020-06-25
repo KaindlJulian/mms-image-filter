@@ -2,6 +2,7 @@ package filters;
 
 import common.FilterParameter;
 import common.NoParamFilter;
+import common.parameters.Parameter;
 import filters.utils.Pixel;
 
 import java.awt.*;
@@ -15,7 +16,7 @@ public class GrayscaleFilter implements NoParamFilter {
   }
 
   @Override
-  public Image apply(BufferedImage image, Map<String, FilterParameter> params) {
+  public Image apply(BufferedImage image, Map<String, Parameter> params) {
     BufferedImage bi = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
 
     for (int i = 0; i < image.getHeight(); i++) {

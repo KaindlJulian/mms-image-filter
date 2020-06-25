@@ -42,7 +42,7 @@ public class ColorHistogramFilter implements InternalFilter {
     int greenMaxFreq = green.values().stream().max(Comparator.comparingInt(v -> v)).get();
     int blueMaxFreq = blue.values().stream().max(Comparator.comparingInt(v -> v)).get();
 
-    int mr = Math.min(Math.min(redMaxFreq, blueMaxFreq), greenMaxFreq);
+    int freqBound = Math.min(Math.min(redMaxFreq, blueMaxFreq), greenMaxFreq);
 
     BufferedImage histogram = new BufferedImage(256, 122, BufferedImage.TYPE_INT_ARGB);
 
@@ -52,13 +52,13 @@ public class ColorHistogramFilter implements InternalFilter {
         int g = 0;
         int b = 0;
 
-        if ((121 - j) < red.get(i) * (121.0 / mr) && red.get(i) != 0) {
+        if ((121 - j) < red.get(i) * (121.0 / freqBound) && red.get(i) != 0) {
           r = 255;
         }
-        if ((121 - j) < green.get(i) * (121.0 / mr) && green.get(i) != 0) {
+        if ((121 - j) < green.get(i) * (121.0 / freqBound) && green.get(i) != 0) {
           g = 255;
         }
-        if ((121 - j) < blue.get(i) * (121.0 / mr) && blue.get(i) != 0) {
+        if ((121 - j) < blue.get(i) * (121.0 / freqBound) && blue.get(i) != 0) {
           b = 255;
         }
 

@@ -1,7 +1,8 @@
 package filters;
 
 import common.Filter;
-import common.FilterParameter;
+import common.parameters.NumberParameter;
+import common.parameters.Parameter;
 import filters.utils.Pixel;
 
 import java.awt.*;
@@ -16,8 +17,8 @@ public class ThresholdFilter implements Filter {
   }
 
   @Override
-  public Image apply(BufferedImage image, Map<String, FilterParameter> params) {
-    int threshold = params.get("threshold").getValue(); // key is the parameter name
+  public Image apply(BufferedImage image, Map<String, Parameter> params) {
+    int threshold = ((NumberParameter) params.get("threshold")).getValue();
     BufferedImage bi = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
 
     for (int i = 0; i < image.getHeight(); i++) {
@@ -36,7 +37,7 @@ public class ThresholdFilter implements Filter {
   }
 
   @Override
-  public List<FilterParameter> getParameters() {
-    return List.of(new FilterParameter("threshold", 128, 0, 255));
+  public List<Parameter> getParameters() {
+    return List.of(new NumberParameter("threshold", 128, 0, 255));
   }
 }

@@ -172,3 +172,20 @@
 .slider .thumb:hover, .slider .thumb:pressed {
     -fx-background-color: -text-color-accent;
 }
+
+/*
+ * text area
+ */
+.text-area {
+    -fx-text-fill: -text-color-primary;
+    -fx-font-family: "Roboto Light";
+    -fx-font-size: 13;
+    -fx-text-box-border: transparent;
+}
+.text-area .content {
+    -fx-border-color: -background-color-primary-dark;
+    -fx-background-color: -background-color-primary;
+}
+.text-area:focused {
+    -fx-focus-color: transparent;
+}
